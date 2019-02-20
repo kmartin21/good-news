@@ -1,0 +1,28 @@
+{
+  "name": "good-news",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kmartin21/good-news.git"
+  },
+  "author": "Keith Martin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kmartin21/good-news/issues"
+  },
+  "homepage": "https://github.com/kmartin21/good-news#readme",
+  "dependencies": {
+    "cookie-session": "^2.0.0-beta.3",
+    "dotenv": "^6.2.0",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.14",
+    "passport": "^0.4.0",
+    "passport-google-oauth20": "^1.0.0"
+  }
+}
