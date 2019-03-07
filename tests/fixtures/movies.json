@@ -1,0 +1,194 @@
+{
+    "all": {
+      "success": {
+        "res": {
+          "statusCode": 200,
+          "headers": {
+            "content-type": "application/json"
+          }
+        },
+        "body": {
+          "data": {
+            "articles": [
+              {
+                  "source": {
+                      "id": "nbc-news",
+                      "name": "NBC News"
+                  },
+                  "author": null,
+                  "title": "At least 16 diagnosed with mumps at Temple University - NBCNews.com",
+                  "description": "Health officials say at least 16 cases of mumps have been confirmed at Temple University, the most cases in the city since 2011.",
+                  "url": "https://www.nbcnews.com/health/kids-health/least-16-diagnosed-mumps-temple-university-n980641",
+                  "urlToImage": "https://media4.s-nbcnews.com/j/newscms/2019_10/2777946/190307-temple-university-cs-152p_a8bc37a437ed049cff8d7f16c07d6c3e.nbcnews-fp-1200-630.jpg",
+                  "publishedAt": "2019-03-07T19:06:00Z",
+                  "content": "Get breaking news alerts and special reports. The news and stories that matter, delivered weekday mornings. SUBSCRIBE March 7, 2019, 7:06 PM UTC / Source: Associated Press Health officials say at least 16 cases of mumps have been confirmed at Temple Universit… [+711 chars]"
+              },
+              {
+                  "source": {
+                      "id": "business-insider",
+                      "name": "Business Insider"
+                  },
+                  "author": "Mark Matousek",
+                  "title": "Tesla reportedly cutting worker hours, supply of small parts - Business Insider",
+                  "description": "Tesla's significant cost-cutting effort has affected employee work schedules and the supply of some small parts, CNBC reported.",
+                  "url": "https://www.businessinsider.com/tesla-reportedly-cutting-worker-hours-supply-of-small-parts-2019-3",
+                  "urlToImage": "https://amp.businessinsider.com/images/5c815dfe2628982a1d6937de-1920-960.jpg",
+                  "publishedAt": "2019-03-07T18:58:25Z",
+                  "content": "Tesla's significant cost-cutting effort has affected employee work schedules and the supply of some small parts used to make vehicles, CNBC reported on Thursday. CNBC described three cost-reduction measures that Tesla had not made public: Asking employees to … [+1644 chars]"
+              },
+              {
+                  "source": {
+                      "id": null,
+                      "name": "Nypost.com"
+                  },
+                  "author": "Amanda Woods",
+                  "title": "Colorado dad details how he murdered wife and two young daughters - New York Post ",
+                  "description": "The Colorado monster convicted of murdering his family told investigators in a newly released interview that his wife didn’t fight back — and may have turned to prayer — as he was choking her…",
+                  "url": "https://nypost.com/2019/03/07/colorado-dad-details-how-he-murdered-wife-and-two-young-daughters/",
+                  "urlToImage": "https://thenypost.files.wordpress.com/2019/03/190307-christopher-watts.jpg?quality=90&strip=all&w=1200",
+                  "publishedAt": "2019-03-07T18:55:00Z",
+                  "content": "The Colorado monster convicted of murdering his family told investigators in a newly released interview that his wife didn’t fight back and may have turned to prayer as he was choking her to death. Chris Watts, 33, revealed in a Feb. 18 prison interview that … [+2132 chars]"
+              }
+          ]
+        }
+      }
+    },
+    "single": {
+      "success": {
+        "res": {
+          "statusCode": 200,
+          "headers": {
+            "content-type": "application/json"
+          }
+        },
+        "body": {
+          "status": "success",
+          "data": [
+            {
+              "id": 4,
+              "name": "The Land Before Time",
+              "genre": "Fantasy",
+              "rating": 7,
+              "explicit": false
+            }
+          ]
+        }
+      },
+      "failure": {
+        "res": {
+          "statusCode": 404,
+          "headers": {
+            "content-type": "application/json"
+          }
+        },
+        "body": {
+          "status": "error",
+          "message": "That movie does not exist."
+        }
+      }
+    },
+    "add": {
+      "success": {
+        "res": {
+          "statusCode": 201,
+          "headers": {
+            "content-type": "application/json"
+          }
+        },
+        "body": {
+          "status": "success",
+          "data": [
+            {
+              "id": 5,
+              "name": "Titanic",
+              "genre": "Drama",
+              "rating": 8,
+              "explicit": true
+            }
+          ]
+        }
+      },
+      "failure": {
+        "res": {
+          "statusCode": 400,
+          "headers": {
+            "content-type": "application/json"
+          }
+        },
+        "body": {
+          "status": "error",
+          "message": "Something went wrong."
+        }
+      }
+    },
+    "update": {
+      "success": {
+        "res": {
+          "statusCode": 200,
+          "headers": {
+            "content-type": "application/json"
+          }
+        },
+        "body": {
+          "status": "success",
+          "data": [
+            {
+              "id": 5,
+              "name": "Titanic",
+              "genre": "Drama",
+              "rating": 9,
+              "explicit": true
+            }
+          ]
+        }
+      },
+      "failure": {
+        "res": {
+          "statusCode": 404,
+          "headers": {
+            "content-type": "application/json"
+          }
+        },
+        "body": {
+          "status": "error",
+          "message": "That movie does not exist."
+        }
+      }
+    },
+    "delete": {
+      "success": {
+        "res": {
+          "statusCode": 200,
+          "headers": {
+            "content-type": "application/json"
+          }
+        },
+        "body": {
+          "status": "success",
+          "data": [
+            {
+              "id": 5,
+              "name": "Titanic",
+              "genre": "Drama",
+              "rating": 9,
+              "explicit": true
+            }
+          ]
+        }
+      },
+      "failure": {
+        "res": {
+          "statusCode": 404,
+          "headers": {
+            "content-type": "application/json"
+          }
+        },
+        "body": {
+          "status": "error",
+          "message": "That movie does not exist."
+        }
+      }
+    }
+  }
+}
+  
