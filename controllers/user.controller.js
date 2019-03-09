@@ -1,5 +1,5 @@
 exports.loginUser = (req, res) => {
-    res.status(200).json({data: {'user': req.user}})
+    res.status(200).json({data: {user: req.user}})
 }
 
 exports.logoutUser = (req, res) => {

@@ -12,4 +12,5 @@ before_install:
 - npm update
 install:
 - npm install
-script: 'true'
+script:
+- npm test
