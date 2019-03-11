@@ -4,9 +4,62 @@ const sinon = require('sinon')
 
 const User = require('../../models/user.model')
 const Article = require('../../models/article.model')
-const { saveArticle } = require('../../controllers/user.controller')
+const { saveArticle, loginUser } = require('../../controllers/user.controller')
 
 describe('User routes', () => {
+    describe('Login', () => {
+        it('should login and save a new user to the db', () => {
+
+            const expectedUser = {
+                username: 'Joe',
+                googleId: '12345',
+                savedArticles: [
+                    {
+                        source: {
+                            id: "cnn",
+                            name: "CNN"
+                        },
+                        author: "Frank Pallotta, CNN",
+                        title: "'Us' scares up screams and applause at SXSW premiere - CNN",
+                        description: "Jordan Peele is up to his old tricks. The director of \"Get Out\" was in Austin, Texas on Friday to premiere his latest horror and psychological thriller, \"Us.\"",
+                        url: "https://www.cnn.com/2019/03/09/entertainment/us-premiere/index.html",
+                        urlToImage: "https://cdn.cnn.com/cnnnext/dam/assets/181226152851-02-us-trailer-screengrab-jordan-peele-super-tease.jpg",
+                        publishedAt: "2019-03-09T15:24:00Z",
+                        content: "It should surprise no one that US is a very satisfying (and anxiety-inducing) follow up to GET OUT. What's more fascinating: that a high-concept FUNNY GAMES/Hitchcock/Cronenberg/Bradbury mashup could feel so fresh at the same time. #sxsw — erickohn (@erickohn… [+14 chars]"
+                    }
+                ]
+            }
+
+            let saveMock = sinon.mock(User)
+                           .expects('findOneAndUpdate')
+                           .yields(null, expectedUser)
+                           
+            let validateMock = sinon.mock(User.prototype)
+                               .expects('validate')
+                               .yields(null)
+
+            let req  = httpMocks.createRequest({
+                method: 'GET',
+                url: '/api/v1/auth/google/callback',
+                user: {
+                    username: 'Joe',
+                    googleId: '12345'
+                }
+            })
+
+            let res = httpMocks.createResponse()
+
+            loginUser(req, res)
+
+            const data = JSON.parse(res._getData())
+
+            assert(saveMock.calledOnce)
+            assert(validateMock.calledOnce)
+            expect(res.statusCode).to.equal(200)
+            expect(data).to.eql({ data: { user: expectedUser } })
+        })
+    })
+
     describe('Articles', () => {
         it('should save an article for a user', () => {
             let updateMock = sinon.mock(User)
