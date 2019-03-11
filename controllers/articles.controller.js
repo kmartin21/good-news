@@ -22,3 +22,4 @@ exports.getTopArticles = (req, res) => {
         res.status(500).json({ message: 'Error getting top headlines' })
     })
 }
+
