@@ -8,9 +8,9 @@ const { saveArticle, loginUser } = require('../../controllers/user.controller')
 
 describe('User routes', () => {
 
+    var sandbox = sinon.createSandbox()
+
     describe('Login', () => {
-        let saveMock = null
-        let validateUserMock = null
 
         it('should login and save a new user to the db', () => {
             const expectedUser = {
@@ -33,11 +33,11 @@ describe('User routes', () => {
                 ]
             }
 
-            saveMock = sinon.mock(User)
+            let saveMock = sandbox.mock(User)
                            .expects('findOneAndUpdate')
                            .yields(null, expectedUser)
                            
-            validateUserMock = sinon.mock(User.prototype)
+            let validateUserMock = sandbox.mock(User.prototype)
                                .expects('validate')
                                .yields(null)
 
@@ -61,22 +61,21 @@ describe('User routes', () => {
             expect(res.statusCode).to.equal(200)
             expect(data).to.eql({ data: { user: expectedUser } })
             
-            saveMock.restore
-            validateUserMock.restore
+            sandbox.verify()
+            sandbox.restore()
         })
     })
 
     describe('Articles', () => {
 
-        var updateMock = null
-        var validateMock = null
-
         it('should save an article for a user', () => {
-            updateMock = sinon.mock(User)
+            sandbox = sinon.createSandbox()
+
+            let updateMock = sandbox.mock(User)
                             .expects('update')
                             .yields(null, null)
 
-            validateMock = sinon.mock(Article.prototype)
+            let validateMock = sandbox.mock(Article.prototype)
                                .expects('validate')
                                .yields(null)
 
@@ -109,8 +108,8 @@ describe('User routes', () => {
             assert(validateMock.calledOnce)
             expect(res.statusCode).to.equal(200)
 
-            updateMock.restore
-            validateMock.restore
+            sandbox.verify()
+            sandbox.restore()
         })
 
         describe('Body with incorrect fields', () => {
@@ -135,14 +134,10 @@ describe('User routes', () => {
                 }
             })
 
-            it('should not save a article', () => {
-                updateMock.restore
-                validateMock.restore
+            it('should respond with a 500 error', () => {
+                sandbox = sinon.createSandbox()
 
-                updateMock = sinon.mock(User)
-                                .expects('update')
-                                .yields(null, null)
-                validateMock = sinon.mock(Article.prototype)
+                let validateMock = sandbox.mock(Article.prototype)
                                    .expects('validate')
                                    .yields(new Error('Missing fields'))
 
@@ -150,51 +145,23 @@ describe('User routes', () => {
 
                 saveArticle(req, res)
 
-                expect(validateMock.calledOnce)
-                expect(updateMock.callCount).to.equal(0)
-
-                updateMock.restore
-                validateMock.restore
-            })
-
-            it('should respond with a 500 error', () => {
-                validateMock = sinon.mock(Article.prototype)
-                                   .expects('validate')
-                                   .yields(new Error('Missing fields'))
-
-                res = httpMocks.createResponse()
-
-                saveArticle(req, res)
+                const data = JSON.parse(res._getData())
 
                 expect(validateMock.calledOnce)
                 expect(res.statusCode).to.equal(400)
                 assert(data.message != null)
+
+                sandbox.verify()
+                sandbox.restore()
             })
         })
 
         describe('User is not logged in', () => {
 
-            afterEach(() => {
-                updateMock.restore
-                validateMock.restore
-            })
-
             let req  = httpMocks.createRequest({
                 method: 'GET',
                 url: '/api/v1/auth/google/callback',
                 user: null
-            })
-
-            it('should not save a article', () => {
-                let updateMock = sinon.mock(User)
-                                .expects('update')
-                                .yields(null, null)
-
-                let res = httpMocks.createResponse()
-
-                saveArticle(req, res)
-
-                expect(updateMock.callCount).to.equal(0)
             })
 
             it('should respond with a 401 error', () => {
@@ -210,19 +177,17 @@ describe('User routes', () => {
         })
 
         describe('Mongoose error updating user', () => {
-    
-            afterEach(() => {
-                updateMock.restore
-                validateMock.restore
-            })
 
             it('should respond with a 500 error', () => {
-                updateMock = sinon.mock(User)
+                sandbox = sinon.createSandbox()
+
+                let updateMock = sandbox.mock(User)
                                 .expects('update')
                                 .yields(new Error('Could not find user'), null)
-                validateMock = sinon.mock(Article.prototype)
-                                .expects('validate')
-                                .yields(null)
+
+                let validateMock = sandbox.mock(Article.prototype)
+                                   .expects('validate')
+                                   .yields(null)
 
                 let req  = httpMocks.createRequest({
                     method: 'POST',
@@ -255,6 +220,9 @@ describe('User routes', () => {
                 expect(updateMock.calledOnce)
                 expect(res.statusCode).to.equal(500)
                 assert(data.message != null)  
+
+                sandbox.verify()
+                sandbox.restore()
             })
         })
     })
