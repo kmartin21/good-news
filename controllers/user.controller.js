@@ -33,10 +33,7 @@ exports.logoutUser = (req, res) => {
 }
 
 exports.saveArticle = (req, res) => {
-    if (req.user == null) {
-        res.status(401).json({ message: 'User is not authorized' })
-        return
-    }
+    if (!isLoggedIn(req, res)) return
 
     const article = new Article({...req.body})
     
@@ -47,15 +44,63 @@ exports.saveArticle = (req, res) => {
         }
     })
 
-    User.update(
+    User.findOneAndUpdate(
         {googleId: req.user.googleId},
-        {"$push": { "savedArticles": req.body.data }},
-        (error, raw) => {
+        {"$addToSet": { "savedArticles": req.body.data }},
+        {returnOriginal: false},
+        (error, result) => {
         if (error) {
             res.status(500).json({ message: 'Error saving article' })
             return
         }
 
-        res.status(200).json({data: null})
+        res.status(200).json({
+            data: {
+                articleId: result._id
+            }
+        })
     })
+}
+
+exports.deleteArticle = (req, res) => {
+    if (!isLoggedIn(req, res)) return
+
+    User.findOneAndUpdate(
+        {googleId: req.user.googleId},
+        {"$pull": { "savedArticles": req.params.articleId }},
+        {returnOriginal: false},
+        (error, result) => {
+        if (error) {
+            res.status(500).json({ message: 'Error deleting article' })
+            return
+        }
+
+        res.status(200)
+    })
+}
+
+exports.getAllArticles = (req, res) => {
+    if (!isLoggedIn(req, res)) return
+
+    User.findOne({googleId: req.user.googleId}, (error, user) => {
+        if (error) {
+            res.status(500).json({ message: 'Error finding user to get saved articles'})
+            return
+        }
+
+        res.status(200).json({
+            data: {
+                savedArticles: user.savedArticles
+            }
+        })
+    })
+
+}
+
+const isLoggedIn = (req, res) => {
+    if (req.user == null) {
+        res.status(401).json({ message: 'User is not authorized' })
+        return false
+    }
+    return true
 }
