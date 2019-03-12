@@ -97,6 +97,9 @@ describe('User routes', () => {
                     },
                     user: {
                         googleId: '123'
+                    },
+                    params: {
+                        googleId: 12345
                     }
                 })
     
@@ -131,6 +134,9 @@ describe('User routes', () => {
                     },
                     user: {
                         googleId: '123'
+                    },
+                    params: {
+                        googleId: 12345
                     }
                 })
 
@@ -161,6 +167,9 @@ describe('User routes', () => {
                 let req  = httpMocks.createRequest({
                     method: 'POST',
                     url: '/api/v1/users/12345/articles',
+                    params: {
+                        googleId: 12345
+                    },
                     user: null
                 })
 
@@ -207,6 +216,9 @@ describe('User routes', () => {
                         },
                         user: {
                             googleId: '123'
+                        },
+                        params: {
+                            googleId: 12345
                         }
                     })
 
@@ -239,6 +251,7 @@ describe('User routes', () => {
                     method: 'DELETE',
                     url: '/api/v1/users/12345/articles/3321',
                     params: {
+                        googleId: 12345,
                         articleId: 3321
                     },
                     user: {
@@ -263,6 +276,7 @@ describe('User routes', () => {
                         method: 'DELETE',
                         url: '/api/v1/users/12345/articles/3321',
                         params: {
+                            googleId: 12345,
                             articleId: 3321
                         },
                         user: null
@@ -291,6 +305,7 @@ describe('User routes', () => {
                         method: 'DELETE',
                         url: '/api/v1/users/12345/articles/3321',
                         params: {
+                            googleId: 12345,
                             articleId: 3321
                         },
                         user: {
@@ -344,7 +359,7 @@ describe('User routes', () => {
                     method: 'GET',
                     url: '/api/v1/users/12345/articles',
                     user: {
-                        googleId: '123'
+                        googleId: '12345'
                     }
                 })
     
@@ -367,7 +382,10 @@ describe('User routes', () => {
                     let req  = httpMocks.createRequest({
                         method: 'GET',
                         url: '/api/v1/users/12345/articles',
-                        user: null
+                        user: null,
+                        params: {
+                            googleId: 12345
+                        }
                     })
 
                     let res = httpMocks.createResponse()
@@ -394,6 +412,9 @@ describe('User routes', () => {
                         url: '/api/v1/users/12345/articles',
                         user: {
                             googleId: '123'
+                        },
+                        params: {
+                            googleId: 12345
                         }
                     })
         
