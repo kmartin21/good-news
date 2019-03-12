@@ -6,24 +6,27 @@ exports.loginUser = (req, res) => {
         res.status(500).json({ message: 'Error logging in user' })
         return
     }
-
-    const user = new User({...req.user})
+    
+    const user = new User({
+        username: req.user.username ? req.user.username : '',
+        googleId: req.user.googleId
+    })
 
     user.validate((error) => {
         if (error) {
             res.status(400).json({message: error})
             return
         }
-    })
 
-    let query = { googleId: req.user.googleId }
-    let update = { username: req.user.username }
-    let options = { upsert: true, new: true, setDefaultsOnInsert: true }
+        let query = { googleId: req.user.googleId }
+        let update = { username: req.user.username }
+        let options = { upsert: true, new: true, setDefaultsOnInsert: true }
 
-    User.findOneAndUpdate(query, update, options, (error, user) => {
-        if (error) res.status(500).json({ message: 'Error saving user' })
+        User.findOneAndUpdate(query, update, options, (error, user) => {
+            if (error) res.status(500).json({ message: 'Error saving user' })
 
-        res.status(200).json({data: {user: user}})
+            res.status(200).json({data: {user: user}})
+        })
     })
 }
 
@@ -42,22 +45,22 @@ exports.saveArticle = (req, res) => {
             res.status(400).json({message: error})
             return
         }
-    })
 
-    User.findOneAndUpdate(
-        {googleId: req.user.googleId},
-        {"$addToSet": { "savedArticles": req.body.data }},
-        {returnOriginal: false},
-        (error, result) => {
-        if (error) {
-            res.status(500).json({ message: 'Error saving article' })
-            return
-        }
-
-        res.status(200).json({
-            data: {
-                articleId: result._id
+        User.findOneAndUpdate(
+            {googleId: req.user.googleId},
+            {"$addToSet": { "savedArticles": req.body.data }},
+            {returnOriginal: false},
+            (error, result) => {
+            if (error) {
+                res.status(500).json({ message: 'Error saving article' })
+                return
             }
+    
+            res.status(200).json({
+                data: {
+                    articleId: result._id
+                }
+            })
         })
     })
 }

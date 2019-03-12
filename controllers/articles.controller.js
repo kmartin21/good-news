@@ -3,10 +3,20 @@ const Sentiment = require('sentiment')
 require('dotenv').config()
 
 exports.getTopArticles = (req, res) => {
-    axios.get(`https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.NEWS_API_KEY}`)
+    axios.get(`https://newsapi.org/v2/top-headlines?language=en&apiKey=${process.env.NEWS_API_KEY}`)
     .then(response => {
         const sentiment = new Sentiment()
         const positiveArticles = response.data.articles.filter(article => {
+            for (let field in article) {
+                if (field === 'title' && article[field] === null ||
+                    field === 'description' && article[field] === null ||
+                    field === 'url' && article[field] === null ||
+                    field === 'urlToImage' && article[field] === null
+                ) {
+                    return false
+                }
+            }
+
             const content = article.title + " " + article.description
             const result = sentiment.analyze(content)
             return result.score > 1

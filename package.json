@@ -19,10 +19,13 @@
   "homepage": "https://github.com/kmartin21/good-news#readme",
   "dependencies": {
     "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
     "cookie-session": "^2.0.0-beta.3",
+    "cors": "^2.8.5",
     "dotenv": "^6.2.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
+    "helmet": "^3.16.0",
     "mongoose": "^5.4.14",
     "newsapi": "^2.4.0",
     "passport": "^0.4.0",
@@ -32,6 +35,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^6.0.2",
+    "morgan": "^1.9.1",
     "nock": "^10.0.6",
     "node-mocks-http": "^1.7.3",
     "request": "^2.88.0",

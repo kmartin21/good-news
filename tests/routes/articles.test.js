@@ -1,4 +1,4 @@
-const { expect } = require('chai')
+const { expect, assert } = require('chai')
 const nock = require('nock')
 const httpMocks = require('node-mocks-http')
 const Sentiment = require('sentiment')
@@ -10,13 +10,23 @@ const { getTopArticles } = require('../../controllers/articles.controller')
 describe('Articles', () => {
 
     describe('Top articles', () => {
-        it('should fetch the top positive news articles in the US', (done) => {
+        it('should fetch the top positive english news articles', (done) => {
             nock('https://newsapi.org')
-            .get(`/v2/top-headlines?country=us&apiKey=${process.env.NEWS_API_KEY}`)
+            .get(`/v2/top-headlines?language=en&apiKey=${process.env.NEWS_API_KEY}`)
             .reply(200, articles)
 
             const sentiment = new Sentiment()
             const positiveArticles = articles.articles.filter(article => {
+                for (let field in article) {
+                    if (field === 'title' && article[field] === null ||
+                        field === 'description' && article[field] === null ||
+                        field === 'url' && article[field] === null ||
+                        field === 'urlToImage' && article[field] === null
+                    ) {
+                        return false
+                    }
+                }
+
                 const content = article.title + " " + article.description
                 const result = sentiment.analyze(content)
                 return result.score > 1
@@ -45,6 +55,32 @@ describe('Articles', () => {
             })
 
             getTopArticles(req, res)
+        })
+
+        describe('news api returns an error', () => {
+            it('should respond with a 500 error', (done) => {
+                nock('https://newsapi.org')
+                .get(`/v2/top-headlines?language=en&apiKey=${process.env.NEWS_API_KEY}`)
+                .replyWithError('Servers are down')
+
+                let req  = httpMocks.createRequest({
+                    method: 'GET',
+                    url: '/api/v1/top-stories'
+                })
+    
+                let res = httpMocks.createResponse({
+                    eventEmitter: require('events').EventEmitter
+                })
+    
+                res.on('end', () => {
+                    const data = JSON.parse(res._getData())
+                    expect(res.statusCode).to.equal(500)
+                    assert(data.message != null)
+                    done()
+                })
+    
+                getTopArticles(req, res)
+            })
         })
     })
 })
