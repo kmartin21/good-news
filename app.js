@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const auth = require('./routes/auth.route')
 const stories = require('./routes/articles.route')
+const users = require('./routes/user.route')
 const passportSetup = require('./config/passportSetup')
 const mongoose = require('mongoose')
 const cookieSession = require('cookie-session')
@@ -26,6 +27,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use('/api/v1/auth', auth)
+app.use('/api/v1/users', users)
 app.use('/api/v1/top-stories', stories)
 
 module.exports = app
