@@ -3,16 +3,16 @@ const Schema = mongoose.Schema
 
 const ArticleSchema = new Schema({
     source: {
-        id: { type: String, required: true },
-        name: { type: String, required: true }
+        id: String,
+        name: String
     },
-    author: { type: String, required: true },
+    author: String,
     title: { type: String, required: true },
     description: { type: String, required: true },
     url: { type: String, required: true },
     urlToImage: { type: String, required: true },
-    publishedAt: { type: String, required: true },
-    content: { type: String, required: true }
+    publishedAt: String,
+    content: String
 })
 
 const Article = mongoose.model('Article', ArticleSchema)

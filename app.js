@@ -1,4 +1,9 @@
 const express = require('express')
+const bodyParser = require('body-parser')
+const path = require('path')
+const cors = require('cors')
+const helmet = require('helmet')
+const morgan = require('morgan')
 const app = express()
 const auth = require('./routes/auth.route')
 const stories = require('./routes/articles.route')
@@ -23,11 +28,16 @@ app.use(cookieSession({
   keys: [process.env.COOKIE_KEY]
 }))
 
+app.use(helmet())
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
+app.use(cors())
+app.use(morgan('dev'))
 app.use(passport.initialize())
 app.use(passport.session())
 
 app.use('/api/v1/auth', auth)
 app.use('/api/v1/users', users)
-app.use('/api/v1/top-stories', stories)
+app.use('/api/v1/top-articles', stories)
 
 module.exports = app
