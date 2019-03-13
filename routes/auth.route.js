@@ -7,7 +7,7 @@ router.get('/google', passport.authenticate('google', {
 }))
 
 router.get('/google/callback', passport.authenticate('google'), userController.loginUser)
-router.get('/logout', userController.logoutUser)
+router.post('/logout', userController.logoutUser)
 
 module.exports = router
 

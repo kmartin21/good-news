@@ -3,7 +3,7 @@ const Article = require('../models/article.model')
 
 exports.loginUser = (req, res) => {
     if (!req.user) {
-        res.status(500).json({ message: 'Error logging in user' })
+        res.redirect('http://localhost:3000', 500)
         return
     }
     
@@ -14,7 +14,7 @@ exports.loginUser = (req, res) => {
 
     user.validate((error) => {
         if (error) {
-            res.status(400).json({message: error})
+            res.redirect('http://localhost:3000', 400)
             return
         }
 
@@ -23,9 +23,9 @@ exports.loginUser = (req, res) => {
         let options = { upsert: true, new: true, setDefaultsOnInsert: true }
 
         User.findOneAndUpdate(query, update, options, (error, user) => {
-            if (error) res.status(500).json({ message: 'Error saving user' })
+            if (error) res.redirect('http://localhost:3000', 500)
 
-            res.status(200).json({data: {user: user}})
+            res.redirect(`http://localhost:3000/user?googleId=${req.user.googleId}&username=${req.user.username}`)
         })
     })
 }
@@ -79,6 +79,23 @@ exports.deleteArticle = (req, res) => {
         }
 
         res.status(200)
+    })
+}
+
+exports.getUser = (req, res) => {
+    if (!isLoggedIn(req, res)) return
+
+    User.findOne({googleId: req.user.googleId}, (error, user) => {
+        if (error) {
+            res.status(500).json({ message: 'Error finding user'})
+            return
+        }
+
+        res.status(200).json({
+            data: {
+                user: user
+            }
+        })
     })
 }
 

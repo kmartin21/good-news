@@ -4,5 +4,6 @@ const userController = require('../controllers/user.controller')
 router.post('/:googleId/articles', userController.saveArticle)
 router.get('/:googleId/articles', userController.getAllArticles)
 router.delete('/:googleId/articles/:articleId', userController.deleteArticle)
+router.get('/:googleId/profile', userController.getUser)
 
 module.exports = router
