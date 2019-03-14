@@ -1,14 +1,20 @@
 import React, { Component } from 'react'
 import { Container, Menu, Button } from 'semantic-ui-react';
 import { logout } from '../api/AuthApi'
+import { withRouter } from 'react-router-dom'
 
 class Nav extends Component {
+
+    constructor(props) {
+        super(props)
+        this.logout = this.logout.bind(this) 
+    }
 
     logout = () => {
         logout()
         .then(response => {
             localStorage.removeItem("username")
-            console.log(response)
+            this.props.history.push('/')
         })
         .catch(error => console.log(error))
     }
@@ -20,25 +26,28 @@ class Nav extends Component {
             <Menu>
                 <Container>
 
-                <Menu.Menu position="right">
+                
                     { username ? (
-                        <div>
-                            <Menu.Item onClick={this.logout}>
+                        <Menu.Menu position="right">
+                            <Menu.Item>
                                 {username}
                             </Menu.Item>
-                        </div>
+                            <Menu.Item onClick={this.logout}>
+                                Logout
+                            </Menu.Item>
+                        </Menu.Menu>
                     ) : (
-                        <div>
-                            <Menu.Item href='http://localhost:7001/api/v1/auth/google'>
+                        <Menu.Menu position="right">
+                            <Menu.Item href='http://localhost:7002/api/v1/auth/google'>
                                 Login With Google
                             </Menu.Item>
-                        </div>
+                        </Menu.Menu>
                     )}
-                </Menu.Menu>
+                
                 </Container>
             </Menu>
         )
     }
 }
 
-export default Nav
+export default withRouter(Nav)

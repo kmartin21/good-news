@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import Nav from './Nav'
 import queryString from 'query-string'
+import Articles from '../containers/Articles'
 
 const App = () => (
   <Router>
@@ -22,6 +23,7 @@ const App = () => (
           return (
             <div>
               <Nav />
+              <Articles />
             </div>
           )
         }} />
