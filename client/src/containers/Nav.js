@@ -8,15 +8,21 @@ class Nav extends Component {
     constructor(props) {
         super(props)
         this.logout = this.logout.bind(this) 
+        this.goToProfile = this.goToProfile.bind(this)
     }
 
     logout = () => {
         logout()
         .then(response => {
             localStorage.removeItem("username")
+            localStorage.removeItem("googleId")
             this.props.history.push('/')
         })
         .catch(error => console.log(error))
+    }
+
+    goToProfile = () => {
+        this.props.history.push(`/user/${localStorage.getItem("googleId")}/profile`)
     }
 
     render() {
@@ -25,11 +31,9 @@ class Nav extends Component {
         return (
             <Menu>
                 <Container>
-
-                
                     { username ? (
                         <Menu.Menu position="right">
-                            <Menu.Item>
+                            <Menu.Item onClick={this.goToProfile}>
                                 {username}
                             </Menu.Item>
                             <Menu.Item onClick={this.logout}>

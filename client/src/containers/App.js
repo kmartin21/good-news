@@ -3,13 +3,24 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import Nav from './Nav'
 import queryString from 'query-string'
 import Articles from '../containers/Articles'
+import Profile from './Profile'
+import Home from '../containers/Home'
 
 const App = () => (
   <Router>
     <div>
       <Switch>
+        <Route exact path='/user/:googleId/profile' render={ ( ) => {
+          return (
+            <div>
+              <Nav />
+              <Profile />
+            </div>
+          )
+        }} />
         <Route path='/user' render={ ({ location }) => {
           const parsedQueryString = queryString.parse(location.search)
+          debugger
           if (parsedQueryString.googleId) {
             localStorage.setItem("googleId", parsedQueryString.googleId)
           }
@@ -23,7 +34,7 @@ const App = () => (
           return (
             <div>
               <Nav />
-              <Articles />
+              <Home />
             </div>
           )
         }} />
