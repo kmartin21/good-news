@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Menu, Button } from 'semantic-ui-react';
+import { Container, Menu, Segment } from 'semantic-ui-react';
 import { logout } from '../api/AuthApi'
 import { withRouter } from 'react-router-dom'
 
@@ -12,25 +12,31 @@ class Nav extends Component {
     }
 
     logout = () => {
+        localStorage.removeItem("username")
+        localStorage.removeItem("googleId")
+        this.props.history.push('/')
+        window.location.reload()
+        
         logout()
-        .then(response => {
-            localStorage.removeItem("username")
-            localStorage.removeItem("googleId")
-            this.props.history.push('/')
-        })
-        .catch(error => console.log(error))
     }
 
     goToProfile = () => {
         this.props.history.push(`/user/${localStorage.getItem("googleId")}/profile`)
     }
 
+    goToHome = () => {
+        this.props.history.push('/')
+    }
+
     render() {
         const username = localStorage.getItem("username")
         
         return (
-            <Menu>
+            <Segment>
+            <Menu secondary>
                 <Container>
+                    <Menu.Item name="Good News" position="left" header={true} onClick={this.goToHome}/>
+                    
                     { username ? (
                         <Menu.Menu position="right">
                             <Menu.Item onClick={this.goToProfile}>
@@ -50,6 +56,7 @@ class Nav extends Component {
                 
                 </Container>
             </Menu>
+            </Segment>
         )
     }
 }

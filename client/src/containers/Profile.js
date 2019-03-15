@@ -1,28 +1,40 @@
 import React, { Component } from 'react'
 import { getUser } from '../api/UserApi'
-import { Header, Responsive, Grid } from 'semantic-ui-react'
-import Articles from './Articles';
+import { Header, Grid, Divider } from 'semantic-ui-react'
+import Articles from './Articles'
+import { withRouter } from 'react-router-dom'
+import ErrorPage from '../components/ErrorPage'
 
-export default class Profile extends Component {
+class Profile extends Component {
 
     constructor(props) {
         super(props)
 
         this.state = {
-            user: {}
+            user: {},
+            errorMessage: null
         }
 
         this.getUserProfile = this.getUserProfile.bind(this)
     }
 
     componentDidMount() {
-        this.getUserProfile()
+        if (localStorage.getItem("googleId")) {
+            const {pathname} = this.props.location
+            if (pathname !== `/user/${localStorage.getItem("googleId")}/profile`) {
+                this.props.history.push(`/user/${localStorage.getItem("googleId")}/profile`)
+            } else {
+                this.getUserProfile()
+            }
+        } else {
+            this.props.history.push('/sign-up')
+        }
     }
 
     getUserProfile = () => {
         getUser()
         .then(response => this.setState({ user: response.data.user}))
-        .catch(error => console.log(error))
+        .catch(error => this.setState({errorMessage: '500. Oops, we are working on this'}))
     }
 
     render() {
@@ -35,14 +47,33 @@ export default class Profile extends Component {
         
         return (
             <div>
-                {this.state.user &&
-                    <div>
-                        <Header as='h1'>{this.state.user.username}</Header>
-                        <Articles articles={savedArticles} divideVertically={true} />
+                {this.state.errorMessage ? (
+                        <ErrorPage errorMessage={this.state.errorMessage} />
+                    ) : (
+                        <div style={{ 'margin-top':'50px' }}>
+                        {this.state.user &&
+                            <div>
+                                <Grid columns={1} container stackable style={{'paddingLeft':'10px', 'paddingRight':'10px'}}>
+                                    <Grid.Row>
+                                        <Grid.Column>
+                                            <Header as='h1'>{this.state.user.username}</Header>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                    <Grid.Row>
+                                        <Grid.Column>
+                                                <Header as='h4'>Saved Stories</Header>
+                                                <Divider style={{'width':'90px'}} />
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </Grid>
+                                <Articles articles={savedArticles} divideVertically={true} />
+                            </div>
+                        }
                     </div>
-                }
+                )}   
             </div>
         )
     }
 }
 
+export default withRouter(Profile)

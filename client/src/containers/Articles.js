@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { saveArticle, deleteArticle } from '../api/UserApi'
-import { Grid, Card, Segment, Responsive } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react'
 import Article from '../components/Article'
+import {logout} from '../api/AuthApi'
+import ErrorPage from '../components/ErrorPage'
 
 class Articles extends Component {
 
@@ -9,33 +11,48 @@ class Articles extends Component {
         super(props)
 
         this.state = {
-            shouldCenter: false
+            shouldCenter: false,
+            errorMessage: null
         }
     }
 
     toggleSaveArticle = (article, saved) => {
         if (!saved) {
             saveArticle(article)
-            .then(response => {
-                console.log(response)
+            .catch(error => {
+                if (error.status === 401) {
+                    logout()
+                } else {
+                    this.setState({errorMessage: '500. Oops, we are working on this'})
+                }
             })
-            .catch(error => console.log(error))
         } else {
             deleteArticle(article)
-            .then(response => {
-                console.log(response)
+            .catch(error => {
+                if (error.status === 401) {
+                    logout()
+                } else {
+                    this.setState({errorMessage: '500. Oops, we are working on this'})
+                }
             })
-            .catch(error => console.log(error))
         }
     }
 
-    handleOnUpdate = (e, { width }) => this.setState({ shouldCenter: width < 700 })
+    logout = () => {
+        localStorage.removeItem("username")
+        localStorage.removeItem("googleId")
+        this.props.history.push('/')
+        window.location.reload()
+        
+        logout()
+    }
 
     render() {
         const {divideVertically} = this.props
 
         let rows = []
         let currentColumn = []
+
         if (this.props.articles.length > 0) {
             if (divideVertically) {
                 this.props.articles.forEach((article) => {
@@ -76,14 +93,20 @@ class Articles extends Component {
 
         let articleGrid
         if (divideVertically) {
-            articleGrid = <Grid columns={1} container divided='vertically' stackable>{rows}</Grid>
+            articleGrid = <Grid columns={1} container divided='vertically' stackable style={{'paddingLeft':'10px', 'paddingRight':'10px'}}>{rows}</Grid>
         } else {
-            articleGrid = <Grid columns={2} container divided stackable>{rows}</Grid>
+            articleGrid = <Grid columns={2} container divided stackable style={{'paddingLeft':'10px', 'paddingRight':'10px'}}>{rows}</Grid>
         }
         
         return (
             <div>
-                {articleGrid}
+                {this.state.errorMessage ? (
+                    <ErrorPage errorMessage={this.state.errorMessage} />
+                ) : (
+                    <div>
+                        {articleGrid}
+                    </div>
+                )}
             </div>
         )
     }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Card, Image, Icon, Item } from 'semantic-ui-react'
+import { Icon, Item } from 'semantic-ui-react'
+import SignUpModal from './SignUpModal'
 
 export default class Article extends Component {
 
@@ -23,26 +24,18 @@ export default class Article extends Component {
     render() {
         const { title, description, url, urlToImage } = this.props
 
+        let savedIcon
+        if (localStorage.getItem("googleId")) {
+            if (this.state.saved) {
+                savedIcon = <Icon name='bookmark' style={{ 'float':'right', 'cursor':'pointer' }} onClick={this.toggleSaved} />
+            } else {
+                savedIcon = <Icon name='bookmark outline' style={{ 'float':'right', 'cursor':'pointer' }} onClick={this.toggleSaved} />
+            }
+        } else {
+            savedIcon = <SignUpModal />
+        }
+
         return (
-            // <Card href={url} target='_blank' style={{'min-width': '200px'}}>
-            //     <Image src={urlToImage} style={{'min-width': '200px'}}/>
-            //     <Card.Content style={{'min-width': '200px'}}>
-            //         <Card.Header>{title}</Card.Header>
-            //         <Card.Description>{description}</Card.Description>
-            //     </Card.Content>
-            //     <Card.Content extra>
-            //         {this.state.saved ? (
-            //             <a onClick={this.toggleSaved}>
-            //                 <Icon name='bookmark' />
-            //             </a>
-            //         ): (
-            //             <a onClick={this.toggleSaved}>
-            //                 <Icon name='bookmark outline' />
-            //             </a>
-            //         )}
-                    
-            //     </Card.Content>
-            // </Card>
             <Item.Group>
                 <Item>
                     <Item.Image size='small' src={urlToImage} />
@@ -50,13 +43,7 @@ export default class Article extends Component {
                         <Item.Header href={url} target='_blank'>{title}</Item.Header>
                         <Item.Description>{description}</Item.Description>
                         <Item.Extra>
-                            {this.state.saved ? (
-                                <Icon name='bookmark' style={{ 'float':'right' }} onClick={this.toggleSaved} />
-                               
-                            ): (
-                                <Icon name='bookmark outline' style={{ 'float':'right' }} onClick={this.toggleSaved} />
-                                
-                            )}
+                            {savedIcon}
                         </Item.Extra>
                     </Item.Content>
                 </Item>
