@@ -31,10 +31,12 @@ app.use(cookieSession({
 app.use(helmet())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-app.use(cors())
+app.use(cors({origin: true, credentials: true}))
 app.use(morgan('dev'))
 app.use(passport.initialize())
 app.use(passport.session())
+
+app.disable('etag');
 
 app.use('/api/v1/auth', auth)
 app.use('/api/v1/users', users)

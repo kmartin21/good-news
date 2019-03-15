@@ -3,7 +3,7 @@ const Sentiment = require('sentiment')
 require('dotenv').config()
 
 exports.getTopArticles = (req, res) => {
-    axios.get(`https://newsapi.org/v2/top-headlines?language=en&apiKey=${process.env.NEWS_API_KEY}`)
+    axios.get(`https://newsapi.org/v2/everything?domains=techcrunch.com&apiKey=${process.env.NEWS_API_KEY}`)
     .then(response => {
         const sentiment = new Sentiment()
         const positiveArticles = response.data.articles.filter(article => {

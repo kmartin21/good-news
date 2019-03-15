@@ -3,7 +3,7 @@ const Article = require('../models/article.model')
 
 exports.loginUser = (req, res) => {
     if (!req.user) {
-        res.status(500).json({ message: 'Error logging in user' })
+        res.redirect('http://localhost:3000', 500)
         return
     }
     
@@ -14,7 +14,7 @@ exports.loginUser = (req, res) => {
 
     user.validate((error) => {
         if (error) {
-            res.status(400).json({message: error})
+            res.redirect('http://localhost:3000', 400)
             return
         }
 
@@ -23,9 +23,9 @@ exports.loginUser = (req, res) => {
         let options = { upsert: true, new: true, setDefaultsOnInsert: true }
 
         User.findOneAndUpdate(query, update, options, (error, user) => {
-            if (error) res.status(500).json({ message: 'Error saving user' })
+            if (error) res.redirect('http://localhost:3000', 500)
 
-            res.status(200).json({data: {user: user}})
+            res.redirect(`http://localhost:3000/user?googleId=${req.user.googleId}&username=${req.user.username}`)
         })
     })
 }
@@ -45,32 +45,27 @@ exports.saveArticle = (req, res) => {
             res.status(400).json({message: error})
             return
         }
-
+        
         User.findOneAndUpdate(
             {googleId: req.user.googleId},
-            {"$addToSet": { "savedArticles": req.body.data }},
+            {"$addToSet": { "savedArticles": req.body }},
             {returnOriginal: false},
             (error, result) => {
             if (error) {
                 res.status(500).json({ message: 'Error saving article' })
                 return
             }
-    
-            res.status(200).json({
-                data: {
-                    articleId: result._id
-                }
-            })
+            res.status(200).send()
         })
     })
 }
 
 exports.deleteArticle = (req, res) => {
     if (!isLoggedIn(req, res)) return
-
+    
     User.findOneAndUpdate(
         {googleId: req.user.googleId},
-        {"$pull": { "savedArticles": req.params.articleId }},
+        {"$pull": {"savedArticles": {"url": req.body.url}}},
         {returnOriginal: false},
         (error, result) => {
         if (error) {
@@ -78,14 +73,27 @@ exports.deleteArticle = (req, res) => {
             return
         }
 
-        res.status(200)
+        res.status(200).send()
+    })
+}
+
+exports.getUser = (req, res) => {
+    User.findOne({googleId: req.params.googleId}, (error, user) => {
+        if (error) {
+            res.status(500).json({ message: 'Error finding user'})
+            return
+        }
+
+        res.status(200).json({
+            data: {
+                user: user
+            }
+        })
     })
 }
 
 exports.getAllArticles = (req, res) => {
-    if (!isLoggedIn(req, res)) return
-
-    User.findOne({googleId: req.user.googleId}, (error, user) => {
+    User.findOne({googleId: req.params.googleId}, (error, user) => {
         if (error) {
             res.status(500).json({ message: 'Error finding user to get saved articles'})
             return
@@ -101,7 +109,7 @@ exports.getAllArticles = (req, res) => {
 }
 
 const isLoggedIn = (req, res) => {
-    if (req.user == null) {
+    if (!req.user) {
         res.status(401).json({ message: 'User is not authorized' })
         return false
     }
