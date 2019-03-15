@@ -20,7 +20,7 @@ const App = () => (
         }} />
         <Route path='/user' render={ ({ location }) => {
           const parsedQueryString = queryString.parse(location.search)
-          debugger
+          
           if (parsedQueryString.googleId) {
             localStorage.setItem("googleId", parsedQueryString.googleId)
           }

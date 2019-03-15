@@ -38,7 +38,7 @@ export default class Profile extends Component {
                 {this.state.user &&
                     <div>
                         <Header as='h1'>{this.state.user.username}</Header>
-                        <Articles articles={savedArticles} />
+                        <Articles articles={savedArticles} divideVertically={true} />
                     </div>
                 }
             </div>

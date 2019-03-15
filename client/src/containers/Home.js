@@ -42,7 +42,7 @@ export default class Home extends Component {
         }
 
         return (
-            <Articles articles={articles}/>
+            <Articles articles={articles} divideVertically={false} />
         )
     }
 

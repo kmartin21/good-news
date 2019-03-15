@@ -12,7 +12,7 @@ describe('Articles', () => {
     describe('Top articles', () => {
         it('should fetch the top positive english news articles', (done) => {
             nock('https://newsapi.org')
-            .get(`/v2/everything?domains=techcrunch.com&apiKey=${process.env.NEWS_API_KEY}`)
+            .get(`/v2/everything?domains=techradar.com,medicalnewstoday.com,businessinsider.com&language=en&pageSize=100&apiKey=${process.env.NEWS_API_KEY}`)
             .reply(200, articles)
 
             const sentiment = new Sentiment()
@@ -60,7 +60,7 @@ describe('Articles', () => {
         describe('news api returns an error', () => {
             it('should respond with a 500 error', (done) => {
                 nock('https://newsapi.org')
-                .get(`/v2/everything?domains=techcrunch.com&apiKey=${process.env.NEWS_API_KEY}`)
+                .get(`/v2/everything?domains=techradar.com,medicalnewstoday.com,businessinsider.com&language=en&pageSize=100&apiKey=${process.env.NEWS_API_KEY}`)
                 .replyWithError('Servers are down')
 
                 let req  = httpMocks.createRequest({

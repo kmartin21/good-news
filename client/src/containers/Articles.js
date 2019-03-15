@@ -32,41 +32,59 @@ class Articles extends Component {
     handleOnUpdate = (e, { width }) => this.setState({ shouldCenter: width < 700 })
 
     render() {
-        let rowColumns = []
-        let currentRow = []
+        const {divideVertically} = this.props
+
+        let rows = []
+        let currentColumn = []
         if (this.props.articles.length > 0) {
-            this.props.articles.forEach((article, index) => {
-                if (index % 3 === 0 && index !== 0) {
-                    rowColumns.push(currentRow)
-                    currentRow = []
-                    currentRow.push(
+            if (divideVertically) {
+                this.props.articles.forEach((article) => {
+                    rows.push(
+                        <Grid.Row>
+                            <Grid.Column>
+                                <Article title={article.title} description={article.description} url={article.url} urlToImage={article.urlToImage} saved={article.saved} toggleSaveArticle={(saved) => this.toggleSaveArticle(article, saved)} />
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                })
+            } else {
+                this.props.articles.forEach((article, index) => {
+                    if (index % 2 === 0 && index !== 0) {
+                        rows.push(
+                            <Grid.Row>
+                                {currentColumn}
+                            </Grid.Row>
+                        )
+                        currentColumn = []
+                    }
+
+                    currentColumn.push(
                         <Grid.Column>
                             <Article title={article.title} description={article.description} url={article.url} urlToImage={article.urlToImage} saved={article.saved} toggleSaveArticle={(saved) => this.toggleSaveArticle(article, saved)} />
                         </Grid.Column>
                     )
-                } else {
-                    currentRow.push(
-                        <Grid.Column>
-                            <Article title={article.title} description={article.description} url={article.url} urlToImage={article.urlToImage}saved={article.saved} toggleSaveArticle={(saved) => this.toggleSaveArticle(article, saved)} />
-                        </Grid.Column>
-                    )
-                    if (index === this.props.articles.length - 1) {     
-                        rowColumns.push(currentRow)
+                    if (index === this.props.articles.length - 1 && currentColumn.length > 0) {     
+                        rows.push(
+                            <Grid.Row>
+                                {currentColumn}
+                            </Grid.Row>
+                        )
                     }
-                }
-            })
+                })
+            }
         }
 
-        let rows = rowColumns.map(columns => 
-            <Grid.Row>
-                {columns}
-            </Grid.Row>    
-        )
-
+        let articleGrid
+        if (divideVertically) {
+            articleGrid = <Grid columns={1} container divided='vertically' stackable>{rows}</Grid>
+        } else {
+            articleGrid = <Grid columns={2} container divided stackable>{rows}</Grid>
+        }
+        
         return (
-            <Responsive as={Grid} columns={this.state.shouldCenter ? 1 : 3} centered={this.state.shouldCenter} doubling stackable fireOnMount onUpdate={this.handleOnUpdate}>
-                {rows}
-            </Responsive>
+            <div>
+                {articleGrid}
+            </div>
         )
     }
 }

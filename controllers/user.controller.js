@@ -8,7 +8,7 @@ exports.loginUser = (req, res) => {
     }
     
     const user = new User({
-        username: req.user.username ? req.user.username : '',
+        username: req.user.username ? req.user.username : 'Profile',
         googleId: req.user.googleId
     })
 
