@@ -23,7 +23,7 @@ export const saveArticle = (article) => {
     return axios.post(`${USER_URL}/${localStorage.getItem("googleId")}/articles`, article, {withCredentials: true})
         .then(response => response.data)
         .catch(error => {
-            throw new Error(error.response.data.message)
+            throw new Error(error.response)
         })
 }
 
@@ -31,6 +31,6 @@ export const deleteArticle = (article) => {
     return axios.put(`${USER_URL}/${localStorage.getItem("googleId")}/articles`, article, {withCredentials: true})
         .then(response => response.data)
         .catch(error => {
-            throw new Error(error.response.data.message)
+            throw new Error(error.response)
         })
 } 

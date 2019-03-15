@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import Articles from '../containers/Articles'
 import { getUserArticles } from '../api/UserApi'
 import { getTopArticles } from '../api/ArticlesApi'
+import { Header, Divider, Grid } from 'semantic-ui-react'
+import ErrorPage from '../components/ErrorPage'
 
 export default class Home extends Component {
 
@@ -10,7 +12,8 @@ export default class Home extends Component {
 
         this.state = {
             userSavedArticles: [],
-            topArticles: []
+            topArticles: [],
+            errorMessage: null
         }
     }
 
@@ -18,11 +21,12 @@ export default class Home extends Component {
         if (localStorage.getItem("googleId")) {
             getUserArticles()
             .then(response => this.setState({ userSavedArticles: response.data.savedArticles }))
-            .catch(error => console.log(error))
+            .catch(error => this.setState({errorMessage: '500. Oops, we are working on this'}))
         } 
+
         getTopArticles()
         .then(response => this.setState({ topArticles: response.data.articles }))
-        .catch(error => console.log(error))
+        .catch(error => this.setState({errorMessage: '500. Oops, we are working on this'}))
     }
 
     render() {
@@ -42,7 +46,23 @@ export default class Home extends Component {
         }
 
         return (
-            <Articles articles={articles}/>
+            <div>
+                {this.state.errorMessage ? (
+                    <ErrorPage errorMessage={this.state.errorMessage} />
+                ) : (
+                    <div style={{ 'marginTop':'50px' }}>
+                        <Grid columns={1} container divided stackable style={{'paddingLeft':'10px', 'paddingRight':'10px'}}>
+                            <Grid.Row>
+                                <Grid.Column>
+                                        <Header as='h4'>Positive Stories</Header>
+                                        <Divider style={{'width':'105px'}} />
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                        <Articles articles={articles} divideVertically={false}/>
+                    </div>
+                )}
+            </div>
         )
     }
 
