@@ -4,7 +4,7 @@ const sinon = require('sinon')
 
 const User = require('../../models/user.model')
 const Article = require('../../models/article.model')
-const { saveArticle, loginUser, deleteArticle, getAllArticles } = require('../../controllers/user.controller')
+const { saveArticle, loginUser, deleteArticle, getAllArticles, getUser } = require('../../controllers/user.controller')
 
 describe('User routes', () => {
 
@@ -54,16 +54,51 @@ describe('User routes', () => {
 
             loginUser(req, res)
 
-            const data = JSON.parse(res._getData())
-
             assert(saveMock.calledOnce)
             assert(validateUserMock.calledOnce)
-            expect(res.statusCode).to.equal(200)
-            expect(data).to.eql({ data: { user: expectedUser } })
             
             sandbox.verify()
             sandbox.restore()
         })
+    })
+
+    it('should get all info for a specified user', () => {
+        sandbox = sinon.createSandbox()
+
+        const expectedUser = {
+            "user" : {
+                "_id": "5c6d8d6d7f0e52717ce087af",
+                "username": "Keith Martin",
+                "googleId": "112762634690233160746",
+                "__v": 0,
+                "savedArticles": []
+            }
+        }
+
+        let findMock = sandbox.mock(User)
+                        .expects('findOne')
+                        .yields(null, expectedUser)
+
+        let req  = httpMocks.createRequest({
+            method: 'GET',
+            url: '/api/v1/users/12345/articles',
+            params: {
+                googleId: 12345
+            }
+        })
+
+        let res = httpMocks.createResponse()
+
+        getUser(req, res)
+
+        const data = JSON.parse(res._getData())
+
+        expect(findMock.calledOnce)
+        expect(res.statusCode).to.equal(200)
+        expect(data).to.eql({ data: {user: expectedUser }})
+
+        sandbox.verify()
+        sandbox.restore()
     })
 
     describe('Articles', () => {
@@ -248,7 +283,7 @@ describe('User routes', () => {
                                 .yields(null, {_id: '12332'})
     
                 let req  = httpMocks.createRequest({
-                    method: 'DELETE',
+                    method: 'PUT',
                     url: '/api/v1/users/12345/articles/3321',
                     params: {
                         googleId: 12345,
@@ -273,7 +308,7 @@ describe('User routes', () => {
             describe('User is not logged in', () => {
                 it('should respond with a 401 error', () => {
                     let req  = httpMocks.createRequest({
-                        method: 'DELETE',
+                        method: 'PUT',
                         url: '/api/v1/users/12345/articles/3321',
                         params: {
                             googleId: 12345,
@@ -302,7 +337,7 @@ describe('User routes', () => {
                                     .yields(new Error('Mongoose error'), null)
         
                     let req  = httpMocks.createRequest({
-                        method: 'DELETE',
+                        method: 'PUT',
                         url: '/api/v1/users/12345/articles/3321',
                         params: {
                             googleId: 12345,
@@ -358,8 +393,8 @@ describe('User routes', () => {
                 let req  = httpMocks.createRequest({
                     method: 'GET',
                     url: '/api/v1/users/12345/articles',
-                    user: {
-                        googleId: '12345'
+                    params: {
+                        googleId: 12345
                     }
                 })
     
@@ -375,28 +410,6 @@ describe('User routes', () => {
 
                 sandbox.verify()
                 sandbox.restore()
-            })
-
-            describe('User is not logged in', () => {
-                it('should respond with a 401 error', () => {
-                    let req  = httpMocks.createRequest({
-                        method: 'GET',
-                        url: '/api/v1/users/12345/articles',
-                        user: null,
-                        params: {
-                            googleId: 12345
-                        }
-                    })
-
-                    let res = httpMocks.createResponse()
-
-                    getAllArticles(req, res)
-
-                    const data = JSON.parse(res._getData())
-
-                    expect(res.statusCode).to.equal(401)
-                    assert(data.message != null)
-                })
             })
 
             describe('Mongoose error getting articles', () => {
