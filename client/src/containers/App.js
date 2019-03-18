@@ -10,16 +10,15 @@ import ErrorPage from '../components/ErrorPage'
 const App = () => (
   <Router>
     <div>
-      <Switch>
-        <Route exact path='/user/:googleId/profile' render={ ( ) => {
+        {/* <Route exact path="/e/d" render={ ( ) => {
           return (
             <div>
               <Nav />
               <Profile />
             </div>
           )
-        }} />
-        <Route exact path='/sign-up' render={ () => {
+        }} /> */}
+        <Route exact path="/sign-up" render={ () => {
           return (
             <div>
               <Nav />
@@ -47,7 +46,7 @@ const App = () => (
             </div>
           )
         }} />
-        <Route path="*" render={ () => {
+         <Route path="*" render={ () => {
           return (
             <div>
               <Nav />
@@ -55,7 +54,6 @@ const App = () => (
             </div>
           )
         }} />
-      </Switch>
     </div>
   </Router>
 )
