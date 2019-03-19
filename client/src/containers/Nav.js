@@ -29,7 +29,7 @@ export class Nav extends Component {
             <Segment>
                 <Menu secondary>
                     <Container>
-                        <Menu.Item name="Good News" position="left" header={true} onClick={this.goToHome}/>
+                        <Menu.Item name="Good News" position="left" header onClick={this.goToHome}/>
                         
                         { username ? (
                             <Menu.Menu position="right">
