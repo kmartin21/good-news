@@ -50,7 +50,7 @@ class Profile extends Component {
                 {this.state.errorMessage ? (
                         <ErrorPage errorMessage={this.state.errorMessage} />
                     ) : (
-                        <div style={{ 'margin-top':'50px' }}>
+                        <div style={{ 'marginTop':'50px' }}>
                         {this.state.user &&
                             <div>
                                 <Grid columns={1} container stackable style={{'paddingLeft':'10px', 'paddingRight':'10px'}}>

@@ -1,26 +1,37 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import App from '../App'
 import { mount } from 'enzyme'
-import { MemoryRouter } from 'react-router'
-import { Route } from 'react-router-dom'
+import { MemoryRouter, withRouter } from 'react-router'
 import ErrorPage from '../../components/ErrorPage'
 import Nav from '../../containers/Nav'
 import SignUpPage from '../../components/SignUpPage'
-import Profile from '../Profile'
 import Home from '../Home'
 
 describe('App', () => {
-  // it('should render without crashing', () => {
-  //   const div = document.createElement('div')
-  //   ReactDOM.render(<App />, div)
-  //   ReactDOM.unmountComponentAtNode(div)
-  // })
-
-  describe('/ path', () => {
+  describe('/user/:googleId/profile path', () => {
     const mountedApp = mount(
-      <MemoryRouter initialEntries={[ '/' ]}>
-          <Route component={App} />
+      <MemoryRouter initialEntries={[ '/user/12345/profile' ]}>
+          <App />
+      </MemoryRouter>
+    )
+
+    beforeEach(() => {
+      localStorage.setItem("googleId", "12345")
+    })
+
+    it('should render a div', () => {
+      expect(mountedApp.find('div').length).toBeGreaterThan(0)
+    })
+
+    it('should render a Nav', () => {
+      expect(mountedApp.find(Nav).length).toBeGreaterThan(0)
+    })
+  })
+
+  describe('/sign-up path', () => {
+    const mountedApp = mount(
+      <MemoryRouter initialEntries={[ '/sign-up' ]}>
+          <App />
       </MemoryRouter>
     )
 
@@ -32,45 +43,75 @@ describe('App', () => {
       expect(mountedApp.find(Nav).length).toBeGreaterThan(0)
     })
 
-    it('should render a Home', () => {
-      expect(mountedApp.find(Home).length).toBeGreaterThan(0)
-      mountedApp.unmount()
+    it('should render a SignUpPage', () => {
+      expect(mountedApp.find(SignUpPage).length).toBeGreaterThan(0)
     })
   })
 
-  // describe('/user path', () => {
-  //   const mountedApp = mount(
-  //     <MemoryRouter initialEntries={[ '/user' ]}>
-  //         <App />
-  //     </MemoryRouter>
-  //   )
+  describe('/user path', () => {
+    const RouterApp = withRouter(App)
+    const mountedApp = mount(
+      <MemoryRouter initialEntries={[ '/user' ]}>
+          <RouterApp />
+      </MemoryRouter>
+    )
 
-  //   it('always renders a redirect to /', () => {
-  //     expect(mountedApp.find(App).props().location.pathname).toEqual("/")
-  //     mountedApp.unmount()
-  //   })
-  // })
+    it('always renders a redirect to /', () => {
+      expect(mountedApp.find(App).props().location.pathname).toEqual("/")
+    })
+  })
 
-  // describe('/user/:googleId/profile path', () => {
-  //   const mountedApp = mount(
-  //     <MemoryRouter initialEntries={[ "/sign-up" ]}>
-  //         <Route component={App} />
-  //     </MemoryRouter>
-  //   )
+  describe('/ path', () => {
+    const mountedApp = mount(
+      <MemoryRouter initialEntries={[ '/' ]}>
+          <App />
+      </MemoryRouter>
+    )
 
-  //   it('should render a div', () => {
-  //     expect(mountedApp.find('div').length).toBeGreaterThan(0)
-  //   })
+    it('should render a div', () => {
+      expect(mountedApp.find('div').length).toBeGreaterThan(0)
+    })
 
-  //   it('should render a Nav', () => {
-  //     expect(mountedApp.find(Nav).length).toBeGreaterThan(0)
-  //   })
+    it('should render a Nav', () => {
+      expect(mountedApp.find(Nav).length).toBeGreaterThan(0)
+    })
 
-  //   // it('should render a Profile', () => {
-  //   //   expect(mountedApp.find(SignUpPage).length).toBeGreaterThan(0)
-  //   //   mountedApp.unmount()
-  //   // })
-  // })
+    it('should render a Home', () => {
+      expect(mountedApp.find(Home).length).toBeGreaterThan(0)
+    })
+  })
+
+  describe('Invalid path', () => {
+    const mountedApp = mount(
+      <MemoryRouter initialEntries={[ '/FOO' ]}>
+          <App />
+      </MemoryRouter>
+    )
+
+    it('should render a div', () => {
+      expect(mountedApp.find('div').length).toBeGreaterThan(0)
+    })
+
+    it('should render a Nav', () => {
+      expect(mountedApp.find(Nav).length).toBeGreaterThan(0)
+    })
+
+    it('should render a ErrorPage', () => {
+      expect(mountedApp.find(ErrorPage).length).toBeGreaterThan(0)
+    })
+
+    describe('the rendered ErrorPage', () => {
+      const mountedApp = mount(
+        <MemoryRouter initialEntries={[ '/FOO' ]}>
+            <App />
+        </MemoryRouter>
+      )
+
+      it('should have its errorMessage prop set', () => {
+        expect(mountedApp.find(ErrorPage).props().errorMessage).toBeDefined()
+      })
+    })
+  })
 })
 
 

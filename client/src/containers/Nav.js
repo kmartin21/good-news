@@ -3,13 +3,7 @@ import { Container, Menu, Segment } from 'semantic-ui-react';
 import { logout } from '../api/AuthApi'
 import { withRouter } from 'react-router-dom'
 
-class Nav extends Component {
-
-    constructor(props) {
-        super(props)
-        this.logout = this.logout.bind(this) 
-        this.goToProfile = this.goToProfile.bind(this)
-    }
+export class Nav extends Component {
 
     logout = () => {
         localStorage.removeItem("username")
