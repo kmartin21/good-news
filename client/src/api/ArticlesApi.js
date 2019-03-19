@@ -1,7 +1,6 @@
 import axios from 'axios'
-import { API_BASE_URL } from './Common'
 
-const TOP_ARTICLES_URL = `${API_BASE_URL}/top-articles`
+const TOP_ARTICLES_URL = `${process.env.REACT_APP_API_BASE_URL}/top-articles`
 
 export const getTopArticles = () => {
     return axios.get(TOP_ARTICLES_URL)

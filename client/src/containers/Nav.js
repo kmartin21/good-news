@@ -42,7 +42,7 @@ export class Nav extends Component {
                             </Menu.Menu>
                         ) : (
                             <Menu.Menu position="right">
-                                <Menu.Item href='http://localhost:7002/api/v1/auth/google'>
+                                <Menu.Item href={`${process.env.REACT_APP_API_BASE_URL}/auth/google`}>
                                     Login With Google
                                 </Menu.Item>
                             </Menu.Menu>

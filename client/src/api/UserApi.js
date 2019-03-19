@@ -1,7 +1,6 @@
 import axios from 'axios'
-import { API_BASE_URL } from './Common'
 
-const USER_URL = `${API_BASE_URL}/users`
+const USER_URL = `${process.env.REACT_APP_API_BASE_URL}/users`
 
 export const getUser = () => {
     return axios.get(`${USER_URL}/${localStorage.getItem("googleId")}/profile`)

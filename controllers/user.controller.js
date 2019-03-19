@@ -1,9 +1,10 @@
 const User = require('../models/user.model')
 const Article = require('../models/article.model')
+require('dotenv').config()
 
 exports.loginUser = (req, res) => {
     if (!req.user) {
-        res.redirect('http://localhost:3000', 500)
+        res.redirect(`${process.env.CLIENT_BASE_URL}`, 500)
         return
     }
     
@@ -14,7 +15,7 @@ exports.loginUser = (req, res) => {
 
     user.validate((error) => {
         if (error) {
-            res.redirect('http://localhost:3000', 400)
+            res.redirect(`${process.env.CLIENT_BASE_URL}`, 400)
             return
         }
 
@@ -23,9 +24,9 @@ exports.loginUser = (req, res) => {
         let options = { upsert: true, new: true, setDefaultsOnInsert: true }
 
         User.findOneAndUpdate(query, update, options, (error, user) => {
-            if (error) res.redirect('http://localhost:3000', 500)
+            if (error) res.redirect(`${process.env.CLIENT_BASE_URL}`, 500)
 
-            res.redirect(`http://localhost:3000/user?googleId=${req.user.googleId}&username=${req.user.username}`)
+            res.redirect(`${process.env.CLIENT_BASE_URL}/user?googleId=${req.user.googleId}&username=${req.user.username}`)
         })
     })
 }
