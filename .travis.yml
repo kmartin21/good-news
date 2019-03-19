@@ -10,7 +10,15 @@ cache:
   - node_modules
 before_install:
 - npm update
+- cd client
+- npm update
+- cd ../
 install:
 - npm install
+- cd client
+- npm install
+- cd ../
 script:
+- npm test
+- cd client
 - npm test

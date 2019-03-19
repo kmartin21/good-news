@@ -3,13 +3,7 @@ import { Container, Menu, Segment } from 'semantic-ui-react';
 import { logout } from '../api/AuthApi'
 import { withRouter } from 'react-router-dom'
 
-class Nav extends Component {
-
-    constructor(props) {
-        super(props)
-        this.logout = this.logout.bind(this) 
-        this.goToProfile = this.goToProfile.bind(this)
-    }
+export class Nav extends Component {
 
     logout = () => {
         localStorage.removeItem("username")
@@ -33,29 +27,29 @@ class Nav extends Component {
         
         return (
             <Segment>
-            <Menu secondary>
-                <Container>
-                    <Menu.Item name="Good News" position="left" header={true} onClick={this.goToHome}/>
+                <Menu secondary>
+                    <Container>
+                        <Menu.Item name="Good News" position="left" header={true} onClick={this.goToHome}/>
+                        
+                        { username ? (
+                            <Menu.Menu position="right">
+                                <Menu.Item onClick={this.goToProfile}>
+                                    {username}
+                                </Menu.Item>
+                                <Menu.Item onClick={this.logout}>
+                                    Logout
+                                </Menu.Item>
+                            </Menu.Menu>
+                        ) : (
+                            <Menu.Menu position="right">
+                                <Menu.Item href='http://localhost:7002/api/v1/auth/google'>
+                                    Login With Google
+                                </Menu.Item>
+                            </Menu.Menu>
+                        )}
                     
-                    { username ? (
-                        <Menu.Menu position="right">
-                            <Menu.Item onClick={this.goToProfile}>
-                                {username}
-                            </Menu.Item>
-                            <Menu.Item onClick={this.logout}>
-                                Logout
-                            </Menu.Item>
-                        </Menu.Menu>
-                    ) : (
-                        <Menu.Menu position="right">
-                            <Menu.Item href='http://localhost:7002/api/v1/auth/google'>
-                                Login With Google
-                            </Menu.Item>
-                        </Menu.Menu>
-                    )}
-                
-                </Container>
-            </Menu>
+                    </Container>
+                </Menu>
             </Segment>
         )
     }

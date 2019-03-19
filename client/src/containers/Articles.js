@@ -4,8 +4,13 @@ import { Grid } from 'semantic-ui-react'
 import Article from '../components/Article'
 import {logout} from '../api/AuthApi'
 import ErrorPage from '../components/ErrorPage'
+import PropTypes from 'prop-types'
 
 class Articles extends Component {
+    static propTypes = {
+        articles: PropTypes.array.isRequired,
+        divideVertically: PropTypes.bool.isRequired
+    }
 
     constructor(props) {
         super(props)
@@ -48,7 +53,7 @@ class Articles extends Component {
     }
 
     render() {
-        const {divideVertically} = this.props
+        const { divideVertically } = this.props
 
         let rows = []
         let currentColumn = []
