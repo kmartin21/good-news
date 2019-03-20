@@ -23,9 +23,8 @@ class Profile extends Component {
             const {pathname} = this.props.location
             if (pathname !== `/user/${localStorage.getItem("googleId")}/profile`) {
                 this.props.history.push(`/user/${localStorage.getItem("googleId")}/profile`)
-            } else {
-                this.getUserProfile()
             }
+            this.getUserProfile()
         } else {
             this.props.history.push('/sign-up')
         }

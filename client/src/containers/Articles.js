@@ -63,7 +63,7 @@ class Articles extends Component {
                 this.props.articles.forEach((article) => {
                     rows.push(
                         <Grid.Row>
-                            <Grid.Column>
+                            <Grid.Column key={article.url}>
                                 <Article title={article.title} description={article.description} url={article.url} urlToImage={article.urlToImage} saved={article.saved} toggleSaveArticle={(saved) => this.toggleSaveArticle(article, saved)} />
                             </Grid.Column>
                         </Grid.Row>
@@ -81,7 +81,7 @@ class Articles extends Component {
                     }
 
                     currentColumn.push(
-                        <Grid.Column>
+                        <Grid.Column key={article.url}>
                             <Article title={article.title} description={article.description} url={article.url} urlToImage={article.urlToImage} saved={article.saved} toggleSaveArticle={(saved) => this.toggleSaveArticle(article, saved)} />
                         </Grid.Column>
                     )
