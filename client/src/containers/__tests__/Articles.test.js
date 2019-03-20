@@ -59,6 +59,15 @@ describe('Articles', () => {
         expect(shallowArticles.find(Grid.Column).length).toBeGreaterThan(0)
     })
 
+    describe('the rendered Grid Columns', () => {
+        it('should have its key prop set the url of each Article', () => {
+            const columns = shallowArticles.find(Grid.Column)
+            for(let i = 0; i < props.articles; i++) {
+                expect(columns[i].props().key).toEqual(props.articles[i].url)
+            }
+        })
+    })
+
     it('should render a Article for each article in the props', () => {
         expect(shallowArticles.find(Article).length).toEqual(props.articles.length)
     })
