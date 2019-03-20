@@ -31,13 +31,18 @@ export default class Home extends Component {
 
     render() {
         let articles = this.state.topArticles
-        if (this.state.userSavedArticles.length > 0 && this.state.topArticles.length > 0) {
+        if (articles.length > 0) {
+            let savedArticlesMap = new Map()
+            
+            this.state.userSavedArticles.forEach(savedArticle => {
+                savedArticlesMap.set(savedArticle.url, savedArticle)
+            })
+
             articles = this.state.topArticles.map( article => {
-                const found = this.state.userSavedArticles.find(savedArticle => {
-                    return savedArticle.url === article.url
-                })
+                let foundArticle = savedArticlesMap.get(article.url)
                 let saved = false
-                if (found !== undefined) {
+                
+                if (foundArticle !== undefined) {
                     saved = true
                 }
 

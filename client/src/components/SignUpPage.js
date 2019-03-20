@@ -12,7 +12,7 @@ export default class SignUpPage extends Component {
     }
 
     login = () => {
-        window.location = 'http://localhost:7002/api/v1/auth/google'
+        window.location = `${process.env.REACT_APP_API_BASE_URL}/auth/google`
     }
 
     render() {

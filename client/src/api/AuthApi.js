@@ -1,7 +1,6 @@
 import axios from 'axios'
-import { API_BASE_URL } from './Common'
 
-const LOGOUT_URL = `${API_BASE_URL}/auth/logout`
+const LOGOUT_URL = `${process.env.REACT_APP_API_BASE_URL}/auth/logout`
 
 export const logout = () => {
     return axios.post(LOGOUT_URL, null, {withCredentials: true})
