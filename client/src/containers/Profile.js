@@ -41,7 +41,7 @@ class Profile extends Component {
         if (this.state.user.savedArticles) {
             savedArticles = this.state.user.savedArticles.map(article => { 
                 return {...article, saved: true} 
-            })
+            }).reverse()
         } 
         
         return (
