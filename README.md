@@ -1,5 +1,3 @@
-# Good News
-
 <p align="center"><img src="/client/src/images/logo.png" title="Good News logo" alt="Good News logo" height="150px" width="150px"></p>
                                                                                                                                 
 <h1 align="center">Good News</h1> 
