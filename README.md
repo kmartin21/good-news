@@ -32,7 +32,7 @@ https://gnewsapp.herokuapp.com
 * <a href="https://reactjs.org">React</a>
 * <a href="https://redux.js.org">Redux</a>
 * <a href="https://github.com/ReactTraining/react-router">React Router</a>
-* CSS
+* <a href="https://react.semantic-ui.com/">Semantic UI React</a>
 #### Tests
 * <a href="https://jestjs.io">Jest</a>
 * <a href="https://airbnb.io/enzyme">Enzyme</a>
@@ -41,6 +41,11 @@ https://gnewsapp.herokuapp.com
 * <a href="https://expressjs.com/">Express</a>
 * <a href="https://nodejs.org/en">Node</a>
 #### Tests
+* <a href="https://mochajs.org">Mocha</a>
+* <a href="https://www.chaijs.com">Chai</a>
+* <a href="https://sinonjs.org/">Sinon</a>
+* <a href=https://github.com/nock/nock">Nock</a>
+* <a href="https://github.com/howardabrams/node-mocks-http">node-mocks-http</a>
 ### Authentication
 * <a href="http://www.passportjs.org/">Passport</a>
 <br>
@@ -48,8 +53,8 @@ https://gnewsapp.herokuapp.com
 ## Run Locally
 Run these commands first:
 ```
-$ git clone https://github.com/kmartin21/filmbase.git
-$ cd filmbase
+$ git clone https://github.com/kmartin21/good-news.git
+$ cd good-news
 $ npm install
 $ cd client
 $ npm install
