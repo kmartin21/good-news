@@ -65,6 +65,7 @@ export default class Home extends Component {
                             </Grid.Row>
                         </Grid>
                         <Articles articles={articles} divideVertically={false}/>
+                        <Header as='h5' color={"grey"} style={{'textAlign':'right'}}>Powered by <a href="https://newsapi.org/" target="_blank" rel="noopener noreferrer">News API</a></Header>
                     </div>
                 )}
             </div>
