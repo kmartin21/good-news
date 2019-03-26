@@ -16,7 +16,10 @@
 </div>
 
 ## Basic Overview
-A full stack web app built with MongoDB, Express, React and Node that displays a feed of positive news articles in tech, health and business. Bad news is everywhere and easy to find. Yes, problems should be exposed so they can be fixed but what about all of the great things going on currently? Good News was built to encourage people to find positivity in the world and give them something to look forward to after reading the news. It uses <a href="https://github.com/thisandagain/sentiment">sentiment</a> to analyze and filter News data provided by the <a href="https://newsapi.org/">News API</a> by determining if the article is positive or not. Users may login through their Gmail account and save articles to read later. 
+A full stack web app built with MongoDB, Express, React and Node that displays a feed of positive news articles in tech, health and business.
+<br>
+
+Bad news is everywhere and easy to find. Yes, problems should be exposed so they can be fixed but what about all of the great things going on currently? Good News was built to encourage people to find positivity in the world and give them something to look forward to after reading the news. It uses <a href="https://github.com/thisandagain/sentiment">sentiment</a> to analyze and filter News data provided by the <a href="https://newsapi.org/">News API</a> by determining if the article is positive or not. Users may login through their Gmail account and save articles to read later. 
 
 ![Good News screenshot](/client/src/images/Screenshot.png)
 <br>
