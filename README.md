@@ -54,7 +54,7 @@ https://gnewsapp.herokuapp.com
 <br>
 
 ## Run Locally
-Run these commands first:
+* Run these commands first:
 ```
 $ git clone https://github.com/kmartin21/good-news.git
 $ cd good-news
@@ -62,14 +62,14 @@ $ npm install
 $ cd client
 $ npm install
 ```
-Rename the ```.env.example``` files in the root and client directories to ```.env```.
+* Rename the ```.env.example``` files in the root and client directories to ```.env```.
 
-Run the server from the root:
+* Run the server from the root:
 ```
 $ npm start
 ```
 
-Run the client from the client directory:
+* Run the client from the client directory:
 ```
 $ npm start
 ```
@@ -77,6 +77,17 @@ $ npm start
 Visit http://localhost:3000 to view the web app.
 <br>
 <br>
+
+## Run Tests
+* Run server tests from the root:
+```
+$ npm test
+```
+
+* Run client tests from the client directory:
+```
+$ npm test
+```
 
 ## License
 <a href="https://opensource.org/licenses/mit-license.php">MIT</a>
