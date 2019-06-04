@@ -33,7 +33,6 @@ https://gnewsapp.herokuapp.com
 ## Built With
 ### Front end
 * <a href="https://reactjs.org">React</a>
-* <a href="https://redux.js.org">Redux</a>
 * <a href="https://github.com/ReactTraining/react-router">React Router</a>
 * <a href="https://react.semantic-ui.com/">Semantic UI React</a>
 #### Tests
